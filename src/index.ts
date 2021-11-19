@@ -1,0 +1,1 @@
+console.log("Quasar Fire Operation ready man!");
