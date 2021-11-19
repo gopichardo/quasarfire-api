@@ -8,5 +8,8 @@
     "start": "node index.js"
   },
   "author": "gopichardoces@gmail.com",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "weighted-positioning": "^0.0.4"
+  }
 }
