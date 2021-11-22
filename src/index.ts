@@ -1,1 +1,7 @@
-console.log("Quasar Fire Operation ready man!");
+import App from './App';
+
+require("dotenv").config();
+
+const app = new App();
+
+app.listen();
