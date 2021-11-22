@@ -1,8 +1,4 @@
-
-"use strict"
-
-const { Vector, calculate } = require("weighted-positioning");
-
+import { Absolute2DPosition, AbsolutePosition, DataObject, LengthUnit, MultilaterationNode, RelativeDistance } from "@openhps/core";
 
 class QuasarFire {
 
@@ -17,22 +13,25 @@ class QuasarFire {
      */
     GetLocation(distances: Float32Array[]): any {
 
-        const kenobi = new Vector(-500, -200);
-        const skywalker = new Vector(100, -100);
-        const sato = new Vector(500, 100);
+        // Create imperial Ship
+        var imperialShip = new DataObject("", "Imperial Ship");
 
-        let res = calculate([
-            { v: kenobi, w: 100 },
-            { v: skywalker, w: 115.5 },
-            { v: sato, w: 142.7 },
-        ]);
+        //Create Satellites
+        var kenobi = new DataObject("", "Kenobi Satellite").setPosition(
+            new Absolute2DPosition(-500, -200, LengthUnit.UNKNOWN));
 
-        console.log(
-            "weighted-positioning - Coordenadas de la nave: X=",
-            res.x,
-            " Y=",
-            res.y
-          );
+        var skywalker = new DataObject("", "Skywalker Satellite").setPosition(
+            new Absolute2DPosition(100, -100, LengthUnit.UNKNOWN));
+
+        var sato = new DataObject("", "Sato Satellite").setPosition(
+            new Absolute2DPosition(500, 100, LengthUnit.UNKNOWN));;
+
+        kenobi.setParent(imperialShip);
+        skywalker.setParent(imperialShip);
+        sato.setParent(imperialShip);
+
+
+        var multilateration = new MultilaterationNode();
 
     }
 
