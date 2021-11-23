@@ -13,7 +13,6 @@
   "author": "gopichardoces@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "@openhps/core": "^0.3.8",
     "express": "^4.17.1"
   },
   "devDependencies": {

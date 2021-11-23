@@ -1,38 +1,38 @@
-import { Absolute2DPosition, AbsolutePosition, DataObject, LengthUnit, MultilaterationNode, RelativeDistance } from "@openhps/core";
+import Message from '../dtos/Message.dto';
+import Trilateration from "../business/Trilateration";
 
 class QuasarFire {
-
-    constructor() {
-
-    }
 
     /**
      * 
      * @param distances Distances from emitter
      * @returns Emiiter xy coordinates
      */
-    GetLocation(distances: Float32Array[]): any {
+    async GetLocation(distances: number[]): Promise<Message> {
 
-        // Create imperial Ship
-        var imperialShip = new DataObject("", "Imperial Ship");
+        return new Promise((resolve, reject) => {
 
-        //Create Satellites
-        var kenobi = new DataObject("", "Kenobi Satellite").setPosition(
-            new Absolute2DPosition(-500, -200, LengthUnit.UNKNOWN));
+            try {
+                let trilaterarion = new Trilateration();
 
-        var skywalker = new DataObject("", "Skywalker Satellite").setPosition(
-            new Absolute2DPosition(100, -100, LengthUnit.UNKNOWN));
+                trilaterarion.GetUnknowNodePosition(distances)
+                    .then(node => {
 
-        var sato = new DataObject("", "Sato Satellite").setPosition(
-            new Absolute2DPosition(500, 100, LengthUnit.UNKNOWN));;
+                        if (!node) {
+                            reject("Error al recuperar posición");
+                        }
 
-        kenobi.setParent(imperialShip);
-        skywalker.setParent(imperialShip);
-        sato.setParent(imperialShip);
+                        resolve(new Message("", node.x, node.y));
 
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
 
-        var multilateration = new MultilaterationNode();
+            } catch (error) {
 
+            }
+        });
     }
 
     /**

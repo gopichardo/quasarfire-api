@@ -1,6 +1,7 @@
 import express from "express";
 import { IController } from './interfaces/IController';
 import AppController from "./controllers/App.controller";
+import QuasarFireController from './controllers/QuasarFire.controller';
 
 class App {
     public app: express.Application;
@@ -16,7 +17,8 @@ class App {
 
         //Add Controllers
         this.controllers = [
-            this.appController
+            this.appController,
+            new QuasarFireController()
         ];
 
 

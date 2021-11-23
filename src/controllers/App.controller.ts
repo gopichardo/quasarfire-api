@@ -13,7 +13,7 @@ class AppController implements IController {
     /**
      * Initialize the controllers routes
      */
-    private InitializeRoutes() {
+    InitializeRoutes() {
         this.router.get("/", this.Status);
         this.router.get("/status", this.Status);
     }
