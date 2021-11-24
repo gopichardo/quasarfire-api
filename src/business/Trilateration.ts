@@ -3,6 +3,13 @@ import Node from "../dtos/Node.dto";
 
 class Trilateration {
 
+    //Satellites List
+    private currentSatellitesPositions = new Array<Node>();
+
+    constructor(satellites: Array<Node>) {
+        this.currentSatellitesPositions = satellites;
+    }
+
 
     /**
      * Get the unknow Node Position
@@ -15,37 +22,19 @@ class Trilateration {
             //Create Imperial Ship Object
             let imperialShip = new Node("Imperial");
 
-
             //Map Satellites and distances to imperial ship
-            let satellites = new Map<Node, number>();
+            let satellitesDistances = new Map<Node, number>();
 
-            // //Create Kenobi Satellite
-            // let kenobi = new Node("Kenobi", -500, -200);
-
-            // //Create Skywalker Satellite
-            // let skywalker = new Node("Skywalker", 100, -100);
-
-            // //Create Sato Satellite
-            // let sato = new Node("Sato", 500, -100);
-
-            //Create Kenobi Satellite
-            let kenobi = new Node("Kenobi", 832.165, 5148.059);
-
-            //Create Skywalker Satellite
-            let skywalker = new Node("Skywalker", 741.264, 5242.310);
-
-            //Create Sato Satellite
-            let sato = new Node("Sato", 863.763, 5245.127);
-
-            //Set satellites distances to imperial ship
-            satellites.set(kenobi, distances[0]);
-            satellites.set(skywalker, distances[1]);
-            satellites.set(sato, distances[2]);
+            //Set satellites distances
+            this.currentSatellitesPositions.forEach((satellite, index, array) => {
+                //Set satellites distances to imperial ship
+                satellitesDistances.set(satellite, distances[index]);
+            });
 
             let imperialShipPositions: Position;
 
             //Calculate the imperial ship position
-            await this.GetPosition(satellites).then(position => {
+            await this.GetPosition(satellitesDistances).then(position => {
 
                 if (!position) {
                     reject("Posición no valida");
@@ -63,7 +52,6 @@ class Trilateration {
             });
         });
     }
-
 
     /**
      * Get the Unknow Node position
