@@ -98,16 +98,15 @@ class Trilateration {
             let Y3 = nodes.find(x => x.name === "Sato")?.y;
             let D3 = distances[2];
 
-
-
             //Getting X
             let Xa = (Y1! - Y3!) * (Math.pow(X1!, 2) - Math.pow(X2!, 2) + Math.pow(Y1!, 2) - Math.pow(Y2!, 2) - Math.pow(D1, 2) + Math.pow(D2, 2)) - (Y1! - Y2!) * (Math.pow(X1!, 2) - Math.pow(X3!, 2) + Math.pow(Y1!, 2) - Math.pow(Y3!, 2) - Math.pow(D1!, 2) + Math.pow(D3!, 2));
             let Xb = (2 * (X1! - X2!) * (Y1! - Y3!) - 2 * (X1! - X3!) * (Y1! - Y2!))
-
             let X4 = parseFloat((Xa / Xb).toFixed(2));
 
             //Getting Y
-            let Y4 = 0;
+            let Ya = (X1! - X3!) * (Math.pow(X1!, 2) - Math.pow(X2!, 2) + Math.pow(Y1!, 2) - Math.pow(Y2!, 2) - Math.pow(D1, 2) + Math.pow(D2, 2)) - (X1! - X2!) * (Math.pow(X1!, 2) - Math.pow(X3!, 2) + Math.pow(Y1!, 2) - Math.pow(Y3!, 2) - Math.pow(D1!, 2) + Math.pow(D3!, 2));
+            let Yb = (2 * (X1! - X3!) * (Y1! - Y2!) - 2 * (X1! - X2!) * (Y1! - Y3!))
+            let Y4 = parseFloat((Ya / Yb).toFixed(2));
 
             resolve(new Position(X4, Y4))
         });
