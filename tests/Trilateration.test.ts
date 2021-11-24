@@ -2,7 +2,7 @@ import Node from "../src/dtos/Node.dto";
 import Trilateration from "../src/business/Trilateration";
 
 
-function GetSatellitesConfiguration(): Array<Node> {
+function GetCustomSatellitesConfiguration(): Array<Node> {
     let satellites = new Array<Node>();
 
     //Create Kenobi Satellite
@@ -20,9 +20,9 @@ function GetSatellitesConfiguration(): Array<Node> {
     return satellites;
 }
 
-test("GetPosition X,Y True", async () => {
+test("GetPosition CustomConfig True", async () => {
     //Arrange
-    let satellitesConfiguration = GetSatellitesConfiguration();
+    let satellitesConfiguration = GetCustomSatellitesConfiguration();
 
     let trilateration = new Trilateration(satellitesConfiguration);
     let distances = new Array(86.814, 69.409, 55.448);
@@ -51,9 +51,9 @@ test("GetPosition X,Y True", async () => {
 
 });
 
-test("GetPosition X,Y False", async () => {
+test("GetPosition CustomConfig False", async () => {
     //Arrange
-    let satellitesConfiguration = GetSatellitesConfiguration();
+    let satellitesConfiguration = GetCustomSatellitesConfiguration();
 
     let trilateration = new Trilateration(satellitesConfiguration);
     let distances = new Array(86.814, 69.409, 55.448);
