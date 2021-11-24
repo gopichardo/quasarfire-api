@@ -73,10 +73,43 @@ class Trilateration {
     GetPosition(satellites: Map<Node, number>): Promise<Position> {
         return new Promise((resolve, reject) => {
 
-            let x4 = 0;
-            let y4 = 0;
+            let distances = new Array<number>();
+            let nodes = new Array<Node>();
+            let i = 0;
 
-            resolve(new Position(x4, y4))
+
+            satellites.forEach((distance, node) => {
+                distances.push(distance);
+                nodes.push(node);
+            });
+
+            //Load Kenobi
+            let X1 = nodes.find(x => x.name === "Kenobi")?.x;
+            let Y1 = nodes.find(y => y.name === "Kenobi")?.y;
+            let D1 = distances[0];
+
+            //Load Skywalker
+            let X2 = nodes.find(x => x.name === "Skywalker")?.x;
+            let Y2 = nodes.find(x => x.name === "Skywalker")?.y;
+            let D2 = distances[1];
+
+            //Load Sato
+            let X3 = nodes.find(x => x.name === "Sato")?.x;
+            let Y3 = nodes.find(x => x.name === "Sato")?.y;
+            let D3 = distances[2];
+
+
+
+            //Getting X
+            let Xa = (Y1! - Y3!) * (Math.pow(X1!, 2) - Math.pow(X2!, 2) + Math.pow(Y1!, 2) - Math.pow(Y2!, 2) - Math.pow(D1, 2) + Math.pow(D2, 2)) - (Y1! - Y2!) * (Math.pow(X1!, 2) - Math.pow(X3!, 2) + Math.pow(Y1!, 2) - Math.pow(Y3!, 2) - Math.pow(D1!, 2) + Math.pow(D3!, 2));
+            let Xb = (2 * (X1! - X2!) * (Y1! - Y3!) - 2 * (X1! - X3!) * (Y1! - Y2!))
+
+            let X4 = parseFloat((Xa / Xb).toFixed(2));
+
+            //Getting Y
+            let Y4 = 0;
+
+            resolve(new Position(X4, Y4))
         });
     }
 
