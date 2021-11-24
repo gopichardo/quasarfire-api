@@ -6,6 +6,10 @@ class Trilateration {
     //Satellites List
     private currentSatellitesPositions = new Array<Node>();
 
+    /**
+     * Constructor
+     * @param satellites Satellites configuration
+     */
     constructor(satellites: Array<Node>) {
         this.currentSatellitesPositions = satellites;
     }
@@ -55,10 +59,10 @@ class Trilateration {
 
     /**
      * Get the Unknow Node position
-     * @param satellites Satellites and distance to Unknow Node
+     * @param satellitesDistances Satellites and distance to Unknow Node
      * @returns Position of Unknow Node
      */
-    GetPosition(satellites: Map<Node, number>): Promise<Position> {
+    GetPosition(satellitesDistances: Map<Node, number>): Promise<Position> {
         return new Promise((resolve, reject) => {
 
             let distances = new Array<number>();
@@ -66,7 +70,7 @@ class Trilateration {
             let i = 0;
 
 
-            satellites.forEach((distance, node) => {
+            satellitesDistances.forEach((distance, node) => {
                 distances.push(distance);
                 nodes.push(node);
             });
