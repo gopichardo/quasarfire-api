@@ -1,20 +1,26 @@
 import Message from '../dtos/Message.dto';
 import Node from "../dtos/Node.dto";
 import Trilateration from "../business/Trilateration";
+import Satellite from '../dtos/Satellite.dto';
 
 class QuasarFire {
     private satellites = new Array<Node>();
 
     /**
-     * 
-     * @param distances Distances to Imperial Ship
+     * Get Imperial Ship Location and Message
+     * @param satellites Satellites from request
      * @returns Imperial Ship Coordinates
      */
-    async GetLocation(distances: number[]): Promise<Message> {
+    GetLocationAndMessage(satellites: Array<Satellite>): Promise<Message> {
 
         return new Promise((resolve, reject) => {
 
             try {
+
+                let distances = this.GetDistancesFromRequest(satellites);
+                let messages = this.GetMessagesFromRequest(satellites);
+
+
                 //Instance of trilateration
                 let trilaterarion = new Trilateration(this.satellites);
 
@@ -24,6 +30,8 @@ class QuasarFire {
                         if (!node) {
                             reject("Error al recuperar posición");
                         }
+
+                        let message = this.GetMessage(messages);
 
                         resolve(new Message("", node.x, node.y));
 
@@ -39,11 +47,11 @@ class QuasarFire {
     }
 
     /**
-     * Gets the emitter message
+     * Gets the Imperial Ship Message
      * @param messages Messages from emmiter in each satellite
      * @returns Message from emmiter
      */
-    GetMessage(messages: String[]): String {
+    GetMessage(messages: String[][]): String {
         var message = "";
 
         return message;
@@ -82,6 +90,30 @@ class QuasarFire {
      */
     GetSatellitesConfiguration(): Array<Node> {
         return this.satellites;
+    }
+
+    /**
+     * Get distances from each Satellite
+     * @param satellites Satellites List
+     * @returns Distances from each Satellite
+     */
+    GetDistancesFromRequest(satellites: Array<Satellite>): Array<number> {
+        let distances = satellites.map((satellite, index) => {
+            return satellite.distance;
+        })
+        return distances;
+    }
+
+    /**
+     * Get messages from each Satellite
+     * @param satellites Satellites List
+     * @returns Messages from each Satellite
+     */
+    GetMessagesFromRequest(satellites: Array<Satellite>): Array<string[]> {
+        let messages = satellites.map((satellite, index) => {
+            return satellite.message;
+        })
+        return messages;
     }
 }
 
