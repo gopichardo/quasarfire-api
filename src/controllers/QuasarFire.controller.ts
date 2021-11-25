@@ -1,12 +1,12 @@
 import { IController } from '../interfaces/IController';
 import express from 'express';
+import { body, Result, ValidationError, validationResult } from "express-validator";
 import QuasarFire from '../business/QuasarFire';
 import Satellite from 'dtos/Satellite.dto';
 
 class QuasarFireController implements IController {
 
     public router = express.Router();
-    quasarFire = new QuasarFire();
 
     constructor() {
         this.InitializeRoutes();
@@ -16,7 +16,9 @@ class QuasarFireController implements IController {
      * Initialize the controllers routes
      */
     InitializeRoutes() {
-        this.router.post("/topsecret", this.GetLocationAndMessage);
+        this.router.post("/topsecret",
+            body("satellites").isArray(),
+            this.GetLocationAndMessage);
     }
 
     /**
@@ -25,13 +27,21 @@ class QuasarFireController implements IController {
      * @param res Response
      */
     private GetLocationAndMessage(req: express.Request, res: express.Response) {
-        // let distances = new Array(2.83, 2.83, 2.83);
-        //let distances = new Array(86.814, 69.409, 55.448);
 
+        let errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).send(errors);
+        }
 
         let satellites: Satellite[] = req.body.satellites;
 
-        this.quasarFire.GetLocationAndMessage(satellites)
+        if (satellites.length === 0) {
+            return res.status(404).send("No es posible determinar la posición y/o mensaje con los datos proporcionados");
+        }
+
+        let quasarFire = new QuasarFire();
+        quasarFire.GetLocationAndMessage(satellites)
             .then(result => {
                 res.status(200).send(result);
             })

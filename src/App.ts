@@ -39,6 +39,7 @@ class App {
 
     private InitializeMiddlewares() {
         //initialize middlewares
+        this.app.use(express.json());
     }
 
     private InitializeControllers(controllers: Array<IController>) {
