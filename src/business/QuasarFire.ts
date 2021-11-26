@@ -7,6 +7,10 @@ import { stringLiteral } from '@babel/types';
 class QuasarFire {
     private satellites = new Array<Node>();
 
+    constructor() {
+        this.SetSatellitesConfiguration();
+    }
+
     /**
      * Get Imperial Ship Location and Message
      * @param satellites Satellites from request
@@ -34,7 +38,7 @@ class QuasarFire {
 
                         let message = this.GetMessage(messages);
 
-                        resolve(new Message("", node.x, node.y));
+                        resolve(new Message(message, node.x, node.y));
 
                     })
                     .catch(error => {
@@ -42,7 +46,7 @@ class QuasarFire {
                     });
 
             } catch (error) {
-
+                reject(error);
             }
         });
     }
