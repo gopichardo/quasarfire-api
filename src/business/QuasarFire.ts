@@ -2,6 +2,7 @@ import Message from '../dtos/Message.dto';
 import Node from "../dtos/Node.dto";
 import Trilateration from "../business/Trilateration";
 import Satellite from '../dtos/Satellite.dto';
+import { stringLiteral } from '@babel/types';
 
 class QuasarFire {
     private satellites = new Array<Node>();
@@ -51,12 +52,32 @@ class QuasarFire {
      * @param messages Messages from emmiter in each satellite
      * @returns Message from emmiter
      */
-    GetMessage(messages: String[][]): String {
+    GetMessage(messages: string[][]): string {
         var message = "";
+        let resultMessage = new Array<string>();
 
+        messages.forEach((message, i) => {
+
+            message.forEach((content, j) => {
+
+                let msg = resultMessage[j];
+
+                if (msg === (null || undefined)) {
+                    resultMessage.push(content.trim());
+                }
+                else {
+                    if (msg.length === 0 && content.trim().length > 0) {
+                        resultMessage[j] = content.trim();
+                    }
+                }
+            });
+        });
+
+        message = resultMessage.filter((m => m.length > 0)).join(" ");
+
+        //Return message
         return message;
     }
-
 
     /**
      * Set the satellites configuration

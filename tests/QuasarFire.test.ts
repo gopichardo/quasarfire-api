@@ -2,7 +2,7 @@ import Satellite from '../src/dtos/Satellite.dto';
 import QuasarFire from '../src/business/QuasarFire';
 
 
-describe("Quassar Fire Get Distances", () => {
+describe("QuassarFire GetDistancesFromRequest", () => {
 
     test("GetDistancesFromRequest True", () => {
 
@@ -45,7 +45,7 @@ describe("Quassar Fire Get Distances", () => {
 
 
 
-describe("Quassar Fire Get Messages", () => {
+describe("QuassarFire GetMessagesFromRequest", () => {
 
     test("GetMessagesFromRequest True", () => {
 
@@ -82,6 +82,41 @@ describe("Quassar Fire Get Messages", () => {
 
         //Assert
         expect(messages).not.toMatchObject([["X", "", "", "X", ""], ["", "X", "", "", "X"], ["X", "", "X", "", ""]]);
+
+    });
+});
+
+describe("QuassarFire GetMessage", () => {
+
+    test("GetMessage True", () => {
+        //Arrange
+        let quassar = new QuasarFire();
+
+        //Act
+        let messages = new Array<string[]>();
+
+        messages.push(["este", "", "", "mensaje", ""], ["", "es", "", "", "secreto"], ["este", "", "un", "", ""]);
+        // messages.push(["A", " ", "C"], ["", "B", ""], ["", "B", "C"])
+        let expectedMessage = quassar.GetMessage(messages);
+
+        //Assert
+        expect(expectedMessage).toBe("este es un mensaje secreto");
+
+    });
+
+    test("GetMessage False", () => {
+        //Arrange
+        let quassar = new QuasarFire();
+
+        //Act
+        let messages = new Array<string[]>();
+
+        messages.push([""]);
+        // messages.push(["A", " ", "C"], ["", "B", ""], ["", "B", "C"])
+        let expectedMessage = quassar.GetMessage(messages);
+
+        //Assert
+        expect(expectedMessage).toBe("");
 
     });
 });
