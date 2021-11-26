@@ -1,6 +1,6 @@
 import { IController } from '../interfaces/IController';
 import express from 'express';
-import { body, Result, ValidationError, validationResult } from "express-validator";
+import { body, Result, validationResult, param } from "express-validator";
 import QuasarFire from '../business/QuasarFire';
 import Satellite from 'dtos/Satellite.dto';
 
@@ -16,9 +16,13 @@ class QuasarFireController implements IController {
      * Initialize the controllers routes
      */
     InitializeRoutes() {
-        this.router.post("/topsecret",
-            body("satellites").isArray(),
-            this.GetLocationAndMessage);
+        //POST /topsecret/
+        this.router.post("/topsecret", body("satellites").isArray(), this.GetLocationAndMessage);
+
+        //POST /topsecret_split
+        this.router.post("/topsecret_split/:satellite_name?",
+            param("satellite_name").isString(),
+            this.SetSatelliteInformation);
     }
 
     /**
@@ -48,6 +52,26 @@ class QuasarFireController implements IController {
             .catch(error => {
                 res.status(404).send("Error al procesar localización");
             })
+    }
+
+    /**
+     * Set Satellite Information
+     * @param req Request
+     * @param res Response
+     */
+    private SetSatelliteInformation(req: express.Request, res: express.Response) {
+
+        let errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).send(errors);
+        }
+
+        let satelliteName = req.params.satellite_name;
+
+        console.log(satelliteName);
+
+        res.status(200).send(satelliteName);
     }
 }
 
