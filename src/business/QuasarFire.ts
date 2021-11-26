@@ -140,6 +140,15 @@ class QuasarFire {
         })
         return messages;
     }
+
+
+    /**
+     * Set the Satellite Information
+     * @param satellite Satellite
+     */
+    SetSatelliteInformation(satellite: Satellite) {
+
+    }
 }
 
 export default QuasarFire;
