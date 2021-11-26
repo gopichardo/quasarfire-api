@@ -3,6 +3,7 @@ import Node from "../dtos/Node.dto";
 import Trilateration from "../business/Trilateration";
 import Satellite from '../dtos/Satellite.dto';
 import { stringLiteral } from '@babel/types';
+import Storage from './Storage';
 
 class QuasarFire {
     private satellites = new Array<Node>();
@@ -143,12 +144,56 @@ class QuasarFire {
 
 
     /**
-     * Set the Satellite Information
+     * Set the Satellite Information Split
      * @param satellite Satellite
      */
-    SetSatelliteInformation(satellite: Satellite) {
+    async SetSatelliteInformation(satellite: Satellite) {
 
+        let saved = false;
+        let currentSatellites = this.GetCurrentSatellites();
+
+        currentSatellites = currentSatellites != (null || undefined) ? currentSatellites : [];
+
+
+        let satelliteExist = currentSatellites.find(s => s.name === satellite.name)!;
+        let satelliteExistIndex = currentSatellites.indexOf(satelliteExist);
+
+        if (!satelliteExist || !currentSatellites || !satelliteExistIndex) {
+            //Save on Local Storage
+            await new Storage().SetKey("Satellites", JSON.stringify(satellite))
+                .then(result => {
+                    saved = result;
+                });
+        }
+        else {
+            //Update Local Storage
+            currentSatellites.splice(satelliteExistIndex, 1, satellite);
+            saved = true;
+        }
+        return saved;
     }
+
+
+    /**
+     * Get Imperial Ship Location and Message Split
+     */
+    GetLocationAndMessageSplit(): Promise<Message> {
+        return new Promise((resolve, reject) => {
+            let currentSatellites = this.GetCurrentSatellites();
+        });
+    }
+
+    /**
+     * Get Current Satellites Saved
+     * @returns 
+     */
+    private GetCurrentSatellites(): Array<Satellite> {
+        let currentSatellites: Array<Satellite> = JSON.parse(new Storage().GetKey("Satellites"));
+
+        return currentSatellites;
+    }
+
+
 }
 
 export default QuasarFire;
