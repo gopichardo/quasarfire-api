@@ -148,29 +148,47 @@ class QuasarFire {
      * @param satellite Satellite
      */
     async SetSatelliteInformation(satellite: Satellite) {
-
         let saved = false;
-        let currentSatellites = this.GetCurrentSatellites();
 
-        currentSatellites = currentSatellites != (null || undefined) ? currentSatellites : [];
+        try {
+            let currentSatellites: Array<Satellite> = this.GetCurrentSatellites();
+
+            currentSatellites = currentSatellites != (null || undefined) ? currentSatellites : [];
 
 
-        let satelliteExist = currentSatellites.find(s => s.name === satellite.name)!;
-        let satelliteExistIndex = currentSatellites.indexOf(satelliteExist);
+            let foundSatellite = currentSatellites.find(s => s.name === satellite.name)!;
+            let founsSatelliteIndex = currentSatellites.indexOf(foundSatellite);
 
-        if (!satelliteExist || !currentSatellites || !satelliteExistIndex) {
-            //Save on Local Storage
-            await new Storage().SetKey("Satellites", JSON.stringify(satellite))
-                .then(result => {
-                    saved = result;
-                });
+            if (founsSatelliteIndex < 0) {
+                //Push the new Satellite
+                currentSatellites.push(satellite);
+            }
+            else {
+                //Update Local Storage
+                currentSatellites.splice(founsSatelliteIndex, 1, satellite);
+            }
+
+            //Save satellites on Local Storage
+            await this.SaveSatellitesOnStorage(currentSatellites).then(result => {
+                saved = result;
+            });
+
+        } catch (error) {
+            console.log(error);
         }
-        else {
-            //Update Local Storage
-            currentSatellites.splice(satelliteExistIndex, 1, satellite);
-            saved = true;
-        }
+
         return saved;
+    }
+
+
+    /**
+     * Save satellites on Local Storage
+     * @param satellites Satellites to Save
+     * @returns 
+     */
+    SaveSatellitesOnStorage(satellites: Satellite[]): Promise<boolean> {
+        //Save on Local Storage
+        return new Storage().SetKey("Satellites", JSON.stringify(satellites));
     }
 
 

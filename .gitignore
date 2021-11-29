@@ -19,6 +19,7 @@
 
 ### Node ###
 # Logs
+scratch
 dist/
 logs
 *.log

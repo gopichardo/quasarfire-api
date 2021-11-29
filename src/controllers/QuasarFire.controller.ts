@@ -82,7 +82,9 @@ class QuasarFireController implements IController {
         new QuasarFire().SetSatelliteInformation(satellite)
             .then(saved => {
                 if (saved) {
-                    res.status(200).send("Información guardadda correctamente");
+                    res.status(200).send("Información guardada correctamente");
+                } else {
+                    res.status(400).send("Error al guardar información");
                 }
             })
             .catch(error => {
