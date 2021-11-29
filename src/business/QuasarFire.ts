@@ -173,7 +173,7 @@ class QuasarFire {
         let saved = false;
 
         try {
-            let currentSatellites: Array<Satellite> = this.GetCurrentSatellites();
+            let currentSatellites: Array<Satellite> = this.GetSavedSatellitesOnStorage();
 
             currentSatellites = currentSatellites != (null || undefined) ? currentSatellites : [];
 
@@ -218,20 +218,17 @@ class QuasarFire {
      * Get Imperial Ship Location and Message Split
      */
     GetLocationAndMessageSplit(): Promise<Message> {
-        return new Promise((resolve, reject) => {
+        //Satellites saved
+        let savedSatellites = this.GetSavedSatellitesOnStorage();
 
-            //Satellites saved
-            let savedSatellites = this.GetCurrentSatellites();
-
-
-        });
+        return this.GetLocationAndMessage(savedSatellites);
     }
 
     /**
      * Get Current Satellites Saved
      * @returns 
      */
-    private GetCurrentSatellites(): Array<Satellite> {
+    GetSavedSatellitesOnStorage(): Array<Satellite> {
         let currentSatellites: Array<Satellite> = JSON.parse(new Storage().GetKey("Satellites"));
 
         return currentSatellites;
