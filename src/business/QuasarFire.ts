@@ -27,10 +27,10 @@ class QuasarFire {
                 let messages = this.GetMessagesFromRequest(satellites);
 
 
-                //Instance of trilateration
-                let trilaterarion = new Trilateration(this.satellites);
 
-                trilaterarion.GetUnknowNodePosition(distances)
+                //Instance of trilateration
+
+                this.GetLocation(distances)
                     .then(node => {
 
                         if (!node) {
@@ -40,7 +40,6 @@ class QuasarFire {
                         let message = this.GetMessage(messages);
 
                         resolve(new Message(message, node.x, node.y));
-
                     })
                     .catch(error => {
                         reject(error);
@@ -49,6 +48,29 @@ class QuasarFire {
             } catch (error) {
                 reject(error);
             }
+        });
+    }
+
+    /**
+     * Get Node Location 
+     * @param distances distances
+     * @returns Node Location
+     */
+    GetLocation(distances: number[]): Promise<Node> {
+        return new Promise((resolve, reject) => {
+            //Instance of trilateration
+            let trilaterarion = new Trilateration(this.satellites);
+            trilaterarion.GetUnknowNodePosition(distances)
+                .then(node => {
+
+                    if (!node) {
+                        reject("Error al recuperar posición");
+                    }
+                    resolve(node);
+                })
+                .catch(error => {
+                    reject(error);
+                });
         });
     }
 
@@ -197,7 +219,11 @@ class QuasarFire {
      */
     GetLocationAndMessageSplit(): Promise<Message> {
         return new Promise((resolve, reject) => {
-            let currentSatellites = this.GetCurrentSatellites();
+
+            //Satellites saved
+            let savedSatellites = this.GetCurrentSatellites();
+
+
         });
     }
 
