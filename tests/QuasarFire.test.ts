@@ -44,7 +44,6 @@ describe("QuassarFire GetDistancesFromRequest", () => {
 });
 
 
-
 describe("QuassarFire GetMessagesFromRequest", () => {
 
     test("GetMessagesFromRequest True", () => {

@@ -22,24 +22,21 @@ function GetCustomSatellitesConfiguration(): Array<Node> {
 
 test("GetPosition CustomConfig True", async () => {
     //Arrange
-    let satellitesConfiguration = GetCustomSatellitesConfiguration();
+    let satellites = GetCustomSatellitesConfiguration();
 
-    let trilateration = new Trilateration(satellitesConfiguration);
+    let trilateration = new Trilateration(satellites);
     let distances = new Array(86.814, 69.409, 55.448);
-
-    //Map Satellites and distances to imperial ship
-    let satellitesDistances = new Map<Node, number>();
 
     //Create Imperial Ship Object
     let imperialShip = new Node("Imperial");
 
     //Set satellites distances to imperial ship
-    satellitesConfiguration.forEach((satellite, index) => {
-        satellitesDistances.set(satellite, distances[index]);
+    satellites.forEach((satellite, index) => {
+        satellite.setDistance(distances[index]);
     });
 
     //Act
-    await trilateration.GetPosition(satellitesDistances)
+    await trilateration.GetPosition(satellites)
         .then(position => {
             if (position) {
                 imperialShip.setPosition(position);
@@ -47,8 +44,7 @@ test("GetPosition CustomConfig True", async () => {
         });
 
     //Assert
-    expect(imperialShip.x == parseFloat((809.898).toFixed(2)) && imperialShip.y == parseFloat((5231.968).toFixed(2))).toBeTruthy();
-
+    expect(imperialShip).toMatchObject(new Node("Imperial", parseFloat((809.898).toFixed(2)), parseFloat((5231.968).toFixed(2))));
 });
 
 test("GetPosition CustomConfig False", async () => {
@@ -58,19 +54,16 @@ test("GetPosition CustomConfig False", async () => {
     let trilateration = new Trilateration(satellitesConfiguration);
     let distances = new Array(86.814, 69.409, 55.448);
 
-    //Map Satellites and distances to imperial ship
-    let satellitesDistances = new Map<Node, number>();
-
     //Create Imperial Ship Object
     let imperialShip = new Node("Imperial");
 
     //Set satellites distances to imperial ship
     satellitesConfiguration.forEach((satellite, index) => {
-        satellitesDistances.set(satellite, distances[index]);
+        satellite.setDistance(distances[index]);
     });
 
     //Act
-    await trilateration.GetPosition(satellitesDistances)
+    await trilateration.GetPosition(satellitesConfiguration)
         .then(position => {
             if (position) {
                 imperialShip.setPosition(position);
@@ -78,5 +71,5 @@ test("GetPosition CustomConfig False", async () => {
         });
 
     //Assert
-    expect(imperialShip.x == parseFloat((1.898).toFixed(2)) && imperialShip.y == parseFloat((-1.968).toFixed(2))).toBeFalsy();
+    expect(imperialShip).not.toMatchObject(new Node("", parseFloat((1).toFixed(2)), parseFloat((1).toFixed(2))));
 });

@@ -26,19 +26,16 @@ class Trilateration {
             //Create Imperial Ship Object
             let imperialShip = new Node("Imperial");
 
-            //Map Satellites and distances to imperial ship
-            let satellitesDistances = new Map<Node, number>();
-
             //Set satellites distances
-            this.currentSatellitesPositions.forEach((satellite, index, array) => {
-                //Set satellites distances to imperial ship
-                satellitesDistances.set(satellite, distances[index]);
+            distances.forEach((distance, index) => {
+                this.currentSatellitesPositions[index].setDistance(distance);
             });
+
 
             let imperialShipPositions: Position;
 
             //Calculate the imperial ship position
-            await this.GetPosition(satellitesDistances).then(position => {
+            await this.GetPosition(this.currentSatellitesPositions).then(position => {
 
                 if (!position) {
                     reject("Posición no valida");
@@ -59,48 +56,46 @@ class Trilateration {
 
     /**
      * Get the Unknow Node position
-     * @param satellitesDistances Satellites and distance to Unknow Node
+     * @param satellites Satellites and distance to Unknow Node
      * @returns Position of Unknow Node
      */
-    GetPosition(satellitesDistances: Map<Node, number>): Promise<Position> {
+    GetPosition(satellites: Array<Node>): Promise<Position> {
         return new Promise((resolve, reject) => {
+            try {
 
-            let distances = new Array<number>();
-            let nodes = new Array<Node>();
-            let i = 0;
+                //Load Kenobi
+                let kenobi = satellites.find(x => x.name.toLowerCase() === "kenobi")!;
+                let X1 = kenobi.x;
+                let Y1 = kenobi.y;
+                let D1 = kenobi.distance;
 
+                //Load Skywalker
+                let skywalker = satellites.find(x => x.name.toLowerCase() === "skywalker")!;
+                let X2 = skywalker.x;
+                let Y2 = skywalker.y;
+                let D2 = skywalker.distance;
 
-            satellitesDistances.forEach((distance, node) => {
-                distances.push(distance);
-                nodes.push(node);
-            });
+                //Load Sato
+                let sato = satellites.find(x => x.name.toLowerCase() === "sato")!;
+                let X3 = sato.x;
+                let Y3 = sato.y;
+                let D3 = sato.distance;
 
-            //Load Kenobi
-            let X1 = nodes.find(x => x.name === "Kenobi")?.x;
-            let Y1 = nodes.find(y => y.name === "Kenobi")?.y;
-            let D1 = distances[0];
+                //Getting X
+                let Xa = (Y1! - Y3!) * (Math.pow(X1!, 2) - Math.pow(X2!, 2) + Math.pow(Y1!, 2) - Math.pow(Y2!, 2) - Math.pow(D1, 2) + Math.pow(D2, 2)) - (Y1! - Y2!) * (Math.pow(X1!, 2) - Math.pow(X3!, 2) + Math.pow(Y1!, 2) - Math.pow(Y3!, 2) - Math.pow(D1!, 2) + Math.pow(D3!, 2));
+                let Xb = (2 * (X1! - X2!) * (Y1! - Y3!) - 2 * (X1! - X3!) * (Y1! - Y2!))
+                let X4 = parseFloat((Xa / Xb).toFixed(2));
 
-            //Load Skywalker
-            let X2 = nodes.find(x => x.name === "Skywalker")?.x;
-            let Y2 = nodes.find(x => x.name === "Skywalker")?.y;
-            let D2 = distances[1];
+                //Getting Y
+                let Ya = (X1! - X3!) * (Math.pow(X1!, 2) - Math.pow(X2!, 2) + Math.pow(Y1!, 2) - Math.pow(Y2!, 2) - Math.pow(D1, 2) + Math.pow(D2, 2)) - (X1! - X2!) * (Math.pow(X1!, 2) - Math.pow(X3!, 2) + Math.pow(Y1!, 2) - Math.pow(Y3!, 2) - Math.pow(D1!, 2) + Math.pow(D3!, 2));
+                let Yb = (2 * (X1! - X3!) * (Y1! - Y2!) - 2 * (X1! - X2!) * (Y1! - Y3!))
+                let Y4 = parseFloat((Ya / Yb).toFixed(2));
 
-            //Load Sato
-            let X3 = nodes.find(x => x.name === "Sato")?.x;
-            let Y3 = nodes.find(x => x.name === "Sato")?.y;
-            let D3 = distances[2];
-
-            //Getting X
-            let Xa = (Y1! - Y3!) * (Math.pow(X1!, 2) - Math.pow(X2!, 2) + Math.pow(Y1!, 2) - Math.pow(Y2!, 2) - Math.pow(D1, 2) + Math.pow(D2, 2)) - (Y1! - Y2!) * (Math.pow(X1!, 2) - Math.pow(X3!, 2) + Math.pow(Y1!, 2) - Math.pow(Y3!, 2) - Math.pow(D1!, 2) + Math.pow(D3!, 2));
-            let Xb = (2 * (X1! - X2!) * (Y1! - Y3!) - 2 * (X1! - X3!) * (Y1! - Y2!))
-            let X4 = parseFloat((Xa / Xb).toFixed(2));
-
-            //Getting Y
-            let Ya = (X1! - X3!) * (Math.pow(X1!, 2) - Math.pow(X2!, 2) + Math.pow(Y1!, 2) - Math.pow(Y2!, 2) - Math.pow(D1, 2) + Math.pow(D2, 2)) - (X1! - X2!) * (Math.pow(X1!, 2) - Math.pow(X3!, 2) + Math.pow(Y1!, 2) - Math.pow(Y3!, 2) - Math.pow(D1!, 2) + Math.pow(D3!, 2));
-            let Yb = (2 * (X1! - X3!) * (Y1! - Y2!) - 2 * (X1! - X2!) * (Y1! - Y3!))
-            let Y4 = parseFloat((Ya / Yb).toFixed(2));
-
-            resolve(new Position(X4, Y4))
+                resolve(new Position(X4, Y4))
+            }
+            catch (error) {
+                reject(error);
+            }
         });
     }
 
