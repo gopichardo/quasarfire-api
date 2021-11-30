@@ -2,6 +2,7 @@ import express from "express";
 import { IController } from './interfaces/IController';
 import AppController from "./controllers/App.controller";
 import QuasarFireController from './controllers/QuasarFire.controller';
+import MarkdownController from "./controllers/Markdown.controller";
 
 class App {
     public app: express.Application;
@@ -14,10 +15,12 @@ class App {
         this.port = parseInt(process.env.PORT!.toString());
 
         this.appController = new AppController();
+        let markdownController = new MarkdownController();
 
         //Add Controllers
         this.controllers = [
             this.appController,
+            markdownController,
             new QuasarFireController()
         ];
 
@@ -27,7 +30,7 @@ class App {
         this.InitializeControllers(this.controllers);
 
         //Default Route
-        this.app.use("/", this.appController.router);
+        this.app.use("/", markdownController.router);
     }
 
 
