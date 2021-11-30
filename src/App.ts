@@ -11,7 +11,7 @@ class App {
 
     constructor() {
         this.app = express();
-        this.port = parseInt(process.env.API_PORT!.toString());
+        this.port = parseInt(process.env.PORT!.toString());
 
         this.appController = new AppController();
 
