@@ -1,4 +1,4 @@
-# API Fuego de Quasar
+# API Operación Fuego de Quasar
 
 Esta API permite identificar la fuente y contenido del mensaje de auxulio de la nave imperial, mediante la triangulación con los satelites Kenobi, Skywalker y Sato.
 
