@@ -182,3 +182,21 @@ Información guardada correctamente
     }
 }
 ```
+
+## Cálculo de las Coordenadas
+
+Se utilizó la información de los satelites y con ayuda de la **Trilateración** fue posible encontrar las coordenadas X,Y del nodo desconocido, utilizando 3 puntos conocidos _(Ubicación de los Satelites)_, con sus respectivas distancias _(distancia de los satelites respecto a la nave imperial)_.
+
+> La trilateración es un método matemático para determinar las posiciones relativas de objetos usando la geometría de triángulos de forma análoga a la triangulación. A diferencia de esta, que usa medidas de ángulo (junto con al menos una distancia conocida para calcular la localización del sujeto), la trilateración usa las localizaciones conocidas de dos o más puntos de referencia, y la distancia medida entre el sujeto y cada punto de referencia. Para determinar de forma única y precisa la localización relativa de un punto en un plano bidimensional usando solo trilateración, se necesitan generalmente al menos 3 puntos de referencia.
+
+### Referencias
+
+- [Estimación de la posición del nodo]
+- [Trilateración]
+
+Desarrollado por **César González**
+Correo: gopichardoces@gmail.com
+LinkedIn: https://www.linkedin.com/in/gopichardoces/
+
+[estimación de la posición del nodo]: http://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S1405-55462019000100185
+[trilateración]: https://es.wikipedia.org/wiki/Trilateraci%C3%B3n
