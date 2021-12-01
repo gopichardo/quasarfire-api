@@ -227,7 +227,16 @@ class QuasarFire {
                 reject("No existe suficiente información para calcular la posición");
             }
             else {
-                resolve(this.GetLocationAndMessage(savedSatellites));
+                this.GetLocationAndMessage(savedSatellites).then(async message => {
+
+                    //Delete satellites information
+                    await new Storage().DeleteKey("Satellites");
+
+                    resolve(message);
+
+                }).catch(error => {
+
+                });
             }
         });
     }
