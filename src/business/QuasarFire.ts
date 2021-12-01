@@ -218,10 +218,18 @@ class QuasarFire {
      * Get Imperial Ship Location and Message Split
      */
     GetLocationAndMessageSplit(): Promise<Message> {
-        //Satellites saved
-        let savedSatellites = this.GetSavedSatellitesOnStorage();
 
-        return this.GetLocationAndMessage(savedSatellites);
+        return new Promise((resolve, reject) => {
+            //Satellites saved
+            let savedSatellites = this.GetSavedSatellitesOnStorage();
+
+            if (savedSatellites === null) {
+                reject("No existe suficiente información para calcular la posición");
+            }
+            else {
+                resolve(this.GetLocationAndMessage(savedSatellites));
+            }
+        });
     }
 
     /**

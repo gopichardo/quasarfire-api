@@ -111,7 +111,7 @@ class QuasarFireController implements IController {
 
             })
             .catch(error => {
-                res.status(404).send("Error al procesar localización");
+                res.status(404).send(error);
             });
 
     }
