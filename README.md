@@ -163,7 +163,7 @@ Api Online!
 }
 ```
 
-**_Formato de la respuesta_**: Mensaje en texto plano que indica que la información se guardó correctamente
+**_Formato de la respuesta_**: Mensaje en texto plano que indica que la información se guardó correctamente  
 
 ```
 Información guardada correctamente
@@ -172,8 +172,8 @@ Información guardada correctamente
 ### /api/topsecret_split
 
 **_Verbo HTTP_**: GET  
-**_Descripción_**: Calcula la ubicación de la nave imperial y retorna el mensaje interceptado por los satélites, con la información recolectada en la ruta /api/topsecret*split/{satellite_name}  
-\*\*\_Formato de la respuesta*\*\*: JSON que contiene el mensaje y posición de la nave imperial, con sus coordenadas X,Y
+**_Descripción_**: Calcula la ubicación de la nave imperial y retorna el mensaje interceptado por los satélites, con la información recolectada en la ruta /api/topsecret/split/{satellite_name}  
+**_Formato de la respuesta_**: JSON que contiene el mensaje y posición de la nave imperial, con sus coordenadas X,Y
 
 ```
 {
@@ -184,6 +184,7 @@ Información guardada correctamente
     }
 }
 ```
+**Nota**: Una vez que la ubicación de la nave imperial es calculada, se borra la información recolectada por los satélites, por lo cual es necesario volver a enviar la información de cada satélite con el metodo post **/api/topsecret/split/{satellite_name}**
 
 ## Cálculo de las Coordenadas
 
