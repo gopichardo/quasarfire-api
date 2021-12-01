@@ -31,6 +31,8 @@ para descargar la solución del proyecto basta con clonar el repositorio con el 
 git clone https://github.com/gopichardo/quasarfire-api.git
 ```
 
+y posicionarse en la rama **master**
+
 ## Instalar dependencias
 
 Antes de iniciar la aplicación es necesario instalar las dependencias de la aplicación, para esto debe seguir los siguientes pasos:
